@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.TAdoptionMapper">
+  <resultMap id="BaseResultMap" type="model.TAdoption">
+    <id column="adoption_id" jdbcType="VARCHAR" property="adoptionId" />
+    <result column="animal_id" jdbcType="VARCHAR" property="animalId" />
+    <result column="adopter_account" jdbcType="VARCHAR" property="adopterAccount" />
+    <result column="adoption_date" jdbcType="TIMESTAMP" property="adoptionDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    adoption_id, animal_id, adopter_account, adoption_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_adoption
+    where adoption_id = #{adoptionId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_adoption
+    where adoption_id = #{adoptionId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="model.TAdoption">
+    insert into t_adoption (adoption_id, animal_id, adopter_account, 
+      adoption_date)
+    values (#{adoptionId,jdbcType=VARCHAR}, #{animalId,jdbcType=VARCHAR}, #{adopterAccount,jdbcType=VARCHAR}, 
+      #{adoptionDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="model.TAdoption">
+    insert into t_adoption
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="adoptionId != null">
+        adoption_id,
+      </if>
+      <if test="animalId != null">
+        animal_id,
+      </if>
+      <if test="adopterAccount != null">
+        adopter_account,
+      </if>
+      <if test="adoptionDate != null">
+        adoption_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="adoptionId != null">
+        #{adoptionId,jdbcType=VARCHAR},
+      </if>
+      <if test="animalId != null">
+        #{animalId,jdbcType=VARCHAR},
+      </if>
+      <if test="adopterAccount != null">
+        #{adopterAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="adoptionDate != null">
+        #{adoptionDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="model.TAdoption">
+    update t_adoption
+    <set>
+      <if test="animalId != null">
+        animal_id = #{animalId,jdbcType=VARCHAR},
+      </if>
+      <if test="adopterAccount != null">
+        adopter_account = #{adopterAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="adoptionDate != null">
+        adoption_date = #{adoptionDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where adoption_id = #{adoptionId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="model.TAdoption">
+    update t_adoption
+    set animal_id = #{animalId,jdbcType=VARCHAR},
+      adopter_account = #{adopterAccount,jdbcType=VARCHAR},
+      adoption_date = #{adoptionDate,jdbcType=TIMESTAMP}
+    where adoption_id = #{adoptionId,jdbcType=VARCHAR}
+  </update>
+
+  <select id="selectSelective" parameterType="model.TAdoption" resultType="model.TAdoption">
+    select  * from t_adoption
+    <where>
+      <trim suffixOverrides="and">
+        <if test="animalId != null">
+          animal_id LIKE concat('%', #{animalId}, '%') and
+        </if>
+        <if test="adopterAccount != null">
+          adopter_account LIKE concat('%', #{adopterAccount}, '%') and
+        </if>
+        <if test="adoptionDate != null">
+          adoption_date LIKE concat('%', #{adoptionDate}, '%') and
+        </if>
+      </trim>
+    </where>
+  </select>
+</mapper>

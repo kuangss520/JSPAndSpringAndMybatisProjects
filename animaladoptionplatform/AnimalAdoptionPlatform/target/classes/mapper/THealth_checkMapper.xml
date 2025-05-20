@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.THealth_checkMapper">
+  <resultMap id="BaseResultMap" type="model.THealth_check">
+    <id column="check_id" jdbcType="INTEGER" property="checkId" />
+    <result column="animal_id" jdbcType="VARCHAR" property="animalId" />
+    <result column="check_item" jdbcType="VARCHAR" property="checkItem" />
+    <result column="check_result" jdbcType="VARCHAR" property="checkResult" />
+    <result column="treatment_desc" jdbcType="VARCHAR" property="treatmentDesc" />
+    <result column="checker_account" jdbcType="VARCHAR" property="checkerAccount" />
+    <result column="check_date" jdbcType="TIMESTAMP" property="checkDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    check_id, animal_id, check_item, check_result, treatment_desc, checker_account, check_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_health_check
+    where check_id = #{checkId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_health_check
+    where check_id = #{checkId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="model.THealth_check">
+    insert into t_health_check (check_id, animal_id, check_item, 
+      check_result, treatment_desc, checker_account, 
+      check_date)
+    values (#{checkId,jdbcType=INTEGER}, #{animalId,jdbcType=VARCHAR}, #{checkItem,jdbcType=VARCHAR}, 
+      #{checkResult,jdbcType=VARCHAR}, #{treatmentDesc,jdbcType=VARCHAR}, #{checkerAccount,jdbcType=VARCHAR}, 
+      #{checkDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="model.THealth_check">
+    insert into t_health_check
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="checkId != null">
+        check_id,
+      </if>
+      <if test="animalId != null">
+        animal_id,
+      </if>
+      <if test="checkItem != null">
+        check_item,
+      </if>
+      <if test="checkResult != null">
+        check_result,
+      </if>
+      <if test="treatmentDesc != null">
+        treatment_desc,
+      </if>
+      <if test="checkerAccount != null">
+        checker_account,
+      </if>
+      <if test="checkDate != null">
+        check_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="checkId != null">
+        #{checkId,jdbcType=INTEGER},
+      </if>
+      <if test="animalId != null">
+        #{animalId,jdbcType=VARCHAR},
+      </if>
+      <if test="checkItem != null">
+        #{checkItem,jdbcType=VARCHAR},
+      </if>
+      <if test="checkResult != null">
+        #{checkResult,jdbcType=VARCHAR},
+      </if>
+      <if test="treatmentDesc != null">
+        #{treatmentDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="checkerAccount != null">
+        #{checkerAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="checkDate != null">
+        #{checkDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="model.THealth_check">
+    update t_health_check
+    <set>
+      <if test="animalId != null">
+        animal_id = #{animalId,jdbcType=VARCHAR},
+      </if>
+      <if test="checkItem != null">
+        check_item = #{checkItem,jdbcType=VARCHAR},
+      </if>
+      <if test="checkResult != null">
+        check_result = #{checkResult,jdbcType=VARCHAR},
+      </if>
+      <if test="treatmentDesc != null">
+        treatment_desc = #{treatmentDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="checkerAccount != null">
+        checker_account = #{checkerAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="checkDate != null">
+        check_date = #{checkDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where check_id = #{checkId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="model.THealth_check">
+    update t_health_check
+    set animal_id = #{animalId,jdbcType=VARCHAR},
+      check_item = #{checkItem,jdbcType=VARCHAR},
+      check_result = #{checkResult,jdbcType=VARCHAR},
+      treatment_desc = #{treatmentDesc,jdbcType=VARCHAR},
+      checker_account = #{checkerAccount,jdbcType=VARCHAR},
+      check_date = #{checkDate,jdbcType=TIMESTAMP}
+    where check_id = #{checkId,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectSelective" parameterType="model.THealth_check" resultType="model.THealth_check">
+    select  * from t_health_check
+    <where>
+      <trim suffixOverrides="and">
+        <if test="animalId != null">
+          animal_id LIKE concat('%', #{animalId}, '%') and
+        </if>
+        <if test="checkItem != null">
+          check_item LIKE concat('%', #{checkItem}, '%') and
+        </if>
+        <if test="checkResult != null">
+          check_result LIKE concat('%', #{checkResult}, '%') and
+        </if>
+        <if test="treatmentDesc != null">
+          treatment_desc LIKE concat('%', #{treatmentDesc}, '%') and
+        </if>
+        <if test="checkerAccount != null">
+          checker_account LIKE concat('%', #{checkerAccount}, '%') and
+        </if>
+        <if test="checkDate != null">
+          check_date LIKE concat('%', #{checkDate}, '%') and
+        </if>
+      </trim>
+    </where>
+  </select>
+
+
+
+</mapper>

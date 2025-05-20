@@ -1,0 +1,88 @@
+-- 流浪动物信息表
+CREATE TABLE t_animal (
+                          animal_id VARCHAR(20) PRIMARY KEY COMMENT '动物编号',
+                          animal_type ENUM('猫', '狗', '其他') NOT NULL COMMENT '动物类型',
+                          breed VARCHAR(50) COMMENT '动物品种',
+                          appearance VARCHAR(50) NOT NULL COMMENT '动物外形描述',
+                          pet_name VARCHAR(50) COMMENT '宠物名称',
+                          photo_url VARCHAR(255) COMMENT '动物照片',
+                          remarks VARCHAR(50) COMMENT '备注说明',
+                          publish_time DATETIME NOT NULL COMMENT '发布时间'
+);
+
+-- 用户信息表
+CREATE TABLE t_ussrer (
+                          user_account VARCHAR(50) PRIMARY KEY COMMENT '账号',
+                          password VARCHAR(100) NOT NULL COMMENT '密码',
+                          name VARCHAR(50) NOT NULL COMMENT '姓名',
+                          user_type ENUM('工作人员', '领养人') NOT NULL COMMENT '用户类型',
+                          phone VARCHAR(20) NOT NULL COMMENT '手机号码',
+                          register_time DATETIME NOT NULL COMMENT '注册时间'
+);
+
+-- 动物领养信息表
+CREATE TABLE t_adoption (
+                            adoption_id VARCHAR(20) PRIMARY KEY COMMENT '领养编号',
+                            animal_id VARCHAR(20) NOT NULL COMMENT '动物编号',
+                            adopter_account VARCHAR(50) NOT NULL COMMENT '领养人账号',
+                            adoption_date DATETIME NOT NULL COMMENT '领养日期',
+                            FOREIGN KEY (animal_id) REFERENCES t_animal(animal_id),
+                            FOREIGN KEY (adopter_account) REFERENCES t_ussrer(user_account)
+);
+
+-- 动物健康检查登记表
+CREATE TABLE t_health_check (
+                                check_id INT PRIMARY KEY AUTO_INCREMENT COMMENT 'ID',
+                                animal_id VARCHAR(20) NOT NULL COMMENT '动物编号',
+                                check_item VARCHAR(100) NOT NULL COMMENT '检查项目',
+                                check_result VARCHAR(50) NOT NULL COMMENT '检查结果',
+                                treatment_desc VARCHAR(50) COMMENT '治疗描述',
+                                checker_account VARCHAR(50) NOT NULL COMMENT '检查人账号',
+                                check_date DATETIME NOT NULL COMMENT '检查日期',
+                                FOREIGN KEY (animal_id) REFERENCES t_animal(animal_id),
+                                FOREIGN KEY (checker_account) REFERENCES t_ussrer(user_account)
+);
+
+-- 动物领养信息视图
+CREATE VIEW v_adoptioninfo AS
+SELECT
+    a.adoption_id,
+    a.animal_id,
+    ani.animal_type,
+    ani.breed,
+    ani.pet_name,
+    a.adopter_account,
+    u.name AS adopter_name,
+    u.phone AS adopter_phone,
+    a.adoption_date
+FROM t_adoption a
+         JOIN t_animal ani ON a.animal_id = ani.animal_id
+         JOIN t_ussrer u ON a.adopter_account = u.user_account;
+
+-- 插入测试数据
+INSERT INTO t_animal (animal_id, animal_type, breed, appearance, pet_name, photo_url, remarks, publish_time)
+VALUES
+    ('A001', '猫', '中华田园猫', '黑白相间，眼睛蓝色，约5个月大', '花花', 'https://picsum.photos/200/300?random=1', '性格温顺，已接种疫苗', '2023-05-10 10:00:00'),
+    ('A002', '狗', '金毛', '金黄色毛发，约1岁', '大黄', 'https://picsum.photos/200/300?random=2', '活泼开朗，已绝育', '2023-06-15 14:30:00'),
+    ('A003', '猫', '英短蓝猫', '灰色短毛，约8个月大', '灰灰', 'https://picsum.photos/200/300?random=3', '有点害羞，需要耐心', '2023-07-20 09:15:00'),
+    ('A004', '狗', '泰迪', '棕色卷毛，约2岁', '贝贝', 'https://picsum.photos/200/300?random=4', '聪明活泼，已训练', '2023-08-05 16:45:00');
+
+INSERT INTO t_ussrer (user_account, password, name, user_type, phone, register_time)
+VALUES
+    ('worker001', 'worker123', '张医生', '工作人员', '13800138001', '2023-01-01 08:30:00'),
+    ('worker002', 'worker456', '李护士', '工作人员', '13900139002', '2023-02-15 11:45:00'),
+    ('adopter001', 'adopter123', '王女士', '领养人', '13700137003', '2023-03-20 14:20:00'),
+    ('adopter002', 'adopter456', '赵先生', '领养人', '13600136004', '2023-04-10 09:10:00');
+
+INSERT INTO t_adoption (adoption_id, animal_id, adopter_account, adoption_date)
+VALUES
+    ('AD001', 'A001', 'adopter001', '2023-05-20 15:30:00'),
+    ('AD002', 'A002', 'adopter002', '2023-06-25 10:15:00'),
+    ('AD003', 'A003', 'adopter001', '2023-07-30 09:45:00');
+
+INSERT INTO t_health_check (animal_id, check_item, check_result, treatment_desc, checker_account, check_date)
+VALUES
+    ('A001', '疫苗接种', '已接种猫三联和狂犬疫苗', '无', 'worker001', '2023-05-05 14:00:00'),
+    ('A002', '体检', '健康，体重正常', '建议定期驱虫', 'worker002', '2023-06-10 11:30:00'),
+    ('A003', '疫苗接种', '已接种猫三联', '需在1个月后接种狂犬疫苗', 'worker001', '2023-07-15 10:20:00'),
+    ('A004', '体检', '健康，体重偏轻', '建议增加营养', 'worker002', '2023-08-01 15:45:00');

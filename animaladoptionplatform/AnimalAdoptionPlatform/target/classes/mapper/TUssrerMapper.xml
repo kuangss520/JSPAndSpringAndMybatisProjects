@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.TUssrerMapper">
+  <resultMap id="BaseResultMap" type="model.TUssrer">
+    <id column="user_account" jdbcType="VARCHAR" property="userAccount" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="user_type" jdbcType="CHAR" property="userType" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="register_time" jdbcType="TIMESTAMP" property="registerTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    user_account, password, name, user_type, phone, register_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_ussrer
+    where user_account = #{userAccount,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_ussrer
+    where user_account = #{userAccount,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="model.TUssrer">
+    insert into t_ussrer (user_account, password, name, 
+      user_type, phone, register_time
+      )
+    values (#{userAccount,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{userType,jdbcType=CHAR}, #{phone,jdbcType=VARCHAR}, #{registerTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="model.TUssrer">
+    insert into t_ussrer
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userAccount != null">
+        user_account,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="userType != null">
+        user_type,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="registerTime != null">
+        register_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userAccount != null">
+        #{userAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null">
+        #{userType,jdbcType=CHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="registerTime != null">
+        #{registerTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="model.TUssrer">
+    update t_ussrer
+    <set>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null">
+        user_type = #{userType,jdbcType=CHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="registerTime != null">
+        register_time = #{registerTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where user_account = #{userAccount,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="model.TUssrer">
+    update t_ussrer
+    set password = #{password,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      user_type = #{userType,jdbcType=CHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      register_time = #{registerTime,jdbcType=TIMESTAMP}
+    where user_account = #{userAccount,jdbcType=VARCHAR}
+  </update>
+
+
+  <select id="selectSelective" parameterType="model.TUssrer" resultType="model.TUssrer">
+    select  * from t_ussrer
+    <where>
+      <trim suffixOverrides="and">
+        <if test="password != null">
+          password LIKE concat('%', #{password}, '%') and
+        </if>
+        <if test="name != null">
+          name LIKE concat('%', #{name}, '%') and
+        </if>
+        <if test="userType != null">
+          user_type LIKE concat('%', #{userType}, '%') and
+        </if>
+        <if test="phone != null">
+          phone LIKE concat('%', #{phone}, '%') and
+        </if>
+        <if test="registerTime != null">
+          register_time LIKE concat('%', #{registerTime}, '%') and
+        </if>
+      </trim>
+    </where>
+  </select>
+
+</mapper>

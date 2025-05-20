@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.TAnimalMapper">
+  <resultMap id="BaseResultMap" type="model.TAnimal">
+    <id column="animal_id" jdbcType="VARCHAR" property="animalId" />
+    <result column="animal_type" jdbcType="CHAR" property="animalType" />
+    <result column="breed" jdbcType="VARCHAR" property="breed" />
+    <result column="appearance" jdbcType="VARCHAR" property="appearance" />
+    <result column="pet_name" jdbcType="VARCHAR" property="petName" />
+    <result column="photo_url" jdbcType="VARCHAR" property="photoUrl" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="publish_time" jdbcType="TIMESTAMP" property="publishTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    animal_id, animal_type, breed, appearance, pet_name, photo_url, remarks, publish_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_animal
+    where animal_id = #{animalId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_animal
+    where animal_id = #{animalId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="model.TAnimal">
+    insert into t_animal (animal_id, animal_type, breed, 
+      appearance, pet_name, photo_url, 
+      remarks, publish_time)
+    values (#{animalId,jdbcType=VARCHAR}, #{animalType,jdbcType=CHAR}, #{breed,jdbcType=VARCHAR}, 
+      #{appearance,jdbcType=VARCHAR}, #{petName,jdbcType=VARCHAR}, #{photoUrl,jdbcType=VARCHAR}, 
+      #{remarks,jdbcType=VARCHAR}, #{publishTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="model.TAnimal">
+    insert into t_animal
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="animalId != null">
+        animal_id,
+      </if>
+      <if test="animalType != null">
+        animal_type,
+      </if>
+      <if test="breed != null">
+        breed,
+      </if>
+      <if test="appearance != null">
+        appearance,
+      </if>
+      <if test="petName != null">
+        pet_name,
+      </if>
+      <if test="photoUrl != null">
+        photo_url,
+      </if>
+      <if test="remarks != null">
+        remarks,
+      </if>
+      <if test="publishTime != null">
+        publish_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="animalId != null">
+        #{animalId,jdbcType=VARCHAR},
+      </if>
+      <if test="animalType != null">
+        #{animalType,jdbcType=CHAR},
+      </if>
+      <if test="breed != null">
+        #{breed,jdbcType=VARCHAR},
+      </if>
+      <if test="appearance != null">
+        #{appearance,jdbcType=VARCHAR},
+      </if>
+      <if test="petName != null">
+        #{petName,jdbcType=VARCHAR},
+      </if>
+      <if test="photoUrl != null">
+        #{photoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null">
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="publishTime != null">
+        #{publishTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="model.TAnimal">
+    update t_animal
+    <set>
+      <if test="animalType != null">
+        animal_type = #{animalType,jdbcType=CHAR},
+      </if>
+      <if test="breed != null">
+        breed = #{breed,jdbcType=VARCHAR},
+      </if>
+      <if test="appearance != null">
+        appearance = #{appearance,jdbcType=VARCHAR},
+      </if>
+      <if test="petName != null">
+        pet_name = #{petName,jdbcType=VARCHAR},
+      </if>
+      <if test="photoUrl != null">
+        photo_url = #{photoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null">
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="publishTime != null">
+        publish_time = #{publishTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where animal_id = #{animalId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="model.TAnimal">
+    update t_animal
+    set animal_type = #{animalType,jdbcType=CHAR},
+      breed = #{breed,jdbcType=VARCHAR},
+      appearance = #{appearance,jdbcType=VARCHAR},
+      pet_name = #{petName,jdbcType=VARCHAR},
+      photo_url = #{photoUrl,jdbcType=VARCHAR},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      publish_time = #{publishTime,jdbcType=TIMESTAMP}
+    where animal_id = #{animalId,jdbcType=VARCHAR}
+  </update>
+
+  <select id="selectSelective" parameterType="model.TAnimal" resultType="model.TAnimal">
+    select  * from t_animal
+    <where>
+      <trim suffixOverrides="and">
+        <if test="animalType != null">
+          animal_type LIKE concat('%', #{animalType}, '%') and
+        </if>
+        <if test="breed != null">
+          breed LIKE concat('%', #{breed}, '%') and
+        </if>
+        <if test="appearance != null">
+          appearance LIKE concat('%', #{appearance}, '%') and
+        </if>
+        <if test="petName != null">
+          pet_name LIKE concat('%', #{petName}, '%') and
+        </if>
+        <if test="photoUrl != null">
+          photo_url LIKE concat('%', #{photoUrl}, '%') and
+        </if>
+        <if test="remarks != null">
+          remarks LIKE concat('%', #{remarks}, '%') and
+        </if>
+        <if test="publishTime != null">
+          publish_time LIKE concat('%', #{publishTime}, '%') and
+        </if>
+      </trim>
+    </where>
+  </select>
+
+
+
+</mapper>
