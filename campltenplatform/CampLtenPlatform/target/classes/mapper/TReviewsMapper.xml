@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.TReviewsMapper">
+  <resultMap id="BaseResultMap" type="model.TReviews">
+    <id column="review_id" jdbcType="INTEGER" property="reviewId" />
+    <result column="novel_id" jdbcType="INTEGER" property="novelId" />
+    <result column="account" jdbcType="VARCHAR" property="account" />
+    <result column="rating" jdbcType="TINYINT" property="rating" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="model.TReviews">
+    <result column="comment" jdbcType="LONGVARCHAR" property="comment" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    review_id, novel_id, account, rating, create_time
+  </sql>
+  <sql id="Blob_Column_List">
+    comment
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_reviews
+    where review_id = #{reviewId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_reviews
+    where review_id = #{reviewId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="model.TReviews">
+    insert into t_reviews (review_id, novel_id, account, 
+      rating, create_time, comment
+      )
+    values (#{reviewId,jdbcType=INTEGER}, #{novelId,jdbcType=INTEGER}, #{account,jdbcType=VARCHAR}, 
+      #{rating,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{comment,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="model.TReviews">
+    insert into t_reviews
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="reviewId != null">
+        review_id,
+      </if>
+      <if test="novelId != null">
+        novel_id,
+      </if>
+      <if test="account != null">
+        account,
+      </if>
+      <if test="rating != null">
+        rating,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="comment != null">
+        comment,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="reviewId != null">
+        #{reviewId,jdbcType=INTEGER},
+      </if>
+      <if test="novelId != null">
+        #{novelId,jdbcType=INTEGER},
+      </if>
+      <if test="account != null">
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="rating != null">
+        #{rating,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="comment != null">
+        #{comment,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="model.TReviews">
+    update t_reviews
+    <set>
+      <if test="novelId != null">
+        novel_id = #{novelId,jdbcType=INTEGER},
+      </if>
+      <if test="account != null">
+        account = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="rating != null">
+        rating = #{rating,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="comment != null">
+        comment = #{comment,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where review_id = #{reviewId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="model.TReviews">
+    update t_reviews
+    set novel_id = #{novelId,jdbcType=INTEGER},
+      account = #{account,jdbcType=VARCHAR},
+      rating = #{rating,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      comment = #{comment,jdbcType=LONGVARCHAR}
+    where review_id = #{reviewId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="model.TReviews">
+    update t_reviews
+    set novel_id = #{novelId,jdbcType=INTEGER},
+      account = #{account,jdbcType=VARCHAR},
+      rating = #{rating,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where review_id = #{reviewId,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectSelective" parameterType="model.TReviews" resultType="model.TReviews">
+    select  * from t_reviews
+    <where>
+      <trim suffixOverrides="and">
+        <if test="novelId != null">
+          novel_id LIKE concat('%', #{novelId}, '%') and
+        </if>
+        <if test="account != null">
+          account LIKE concat('%', #{account}, '%') and
+        </if>
+        <if test="rating != null">
+          rating LIKE concat('%', #{rating}, '%') and
+        </if>
+        <if test="createTime != null">
+          create_time LIKE concat('%', #{createTime}, '%') and
+        </if>
+        <if test="comment != null">
+          comment LIKE concat('%', #{comment}, '%') and
+        </if>
+      </trim>
+    </where>
+  </select>
+
+
+</mapper>

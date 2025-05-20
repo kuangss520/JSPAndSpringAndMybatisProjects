@@ -1,0 +1,87 @@
+-- 用户信息表
+CREATE TABLE t_userss (
+                       account VARCHAR(50) PRIMARY KEY,
+                       password VARCHAR(100) NOT NULL,
+                       name VARCHAR(50) NOT NULL,
+                       phone VARCHAR(20),
+                       user_type ENUM('author', 'reader') NOT NULL
+);
+
+-- 小说表
+CREATE TABLE novels (
+                        novel_id INT PRIMARY KEY AUTO_INCREMENT,
+                        title VARCHAR(100) NOT NULL,
+                        genre VARCHAR(50) NOT NULL,
+                        description TEXT,
+                        author VARCHAR(50) NOT NULL,
+                        create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                        status ENUM('serializing', 'completed') NOT NULL,
+                        cover_image VARCHAR(255),
+                        total_rating DECIMAL(3,1) DEFAULT 0.0,
+                        FOREIGN KEY (author) REFERENCES t_userss(account)
+);
+
+-- 章节内容表
+CREATE TABLE chapters (
+                          chapter_id INT PRIMARY KEY AUTO_INCREMENT,
+                          novel_id INT NOT NULL,
+                          chapter_order INT NOT NULL,
+                          title VARCHAR(100) NOT NULL,
+                          content TEXT NOT NULL,
+                          publish_status ENUM('saved', 'submitted', 'reviewing', 'published') NOT NULL,
+                          last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                          FOREIGN KEY (novel_id) REFERENCES novels(novel_id)
+);
+
+-- 评价信息表
+CREATE TABLE reviews (
+                         review_id INT PRIMARY KEY AUTO_INCREMENT,
+                         novel_id INT NOT NULL,
+                         account VARCHAR(50) NOT NULL,
+                         rating TINYINT NOT NULL CHECK (rating BETWEEN 1 AND 10),
+                         comment TEXT,
+                         create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                         FOREIGN KEY (novel_id) REFERENCES novels(novel_id),
+                         FOREIGN KEY (account) REFERENCES t_userss(account)
+);
+
+
+-- 插入用户数据（2个作者，2个读者）
+INSERT INTO t_userss (account, password, name, phone, user_type) VALUES
+                                                                  ('author1', 'pass123', '张三', '13800138001', 'author'),
+                                                                  ('author2', 'pass456', '李四', '13900139002', 'author'),
+                                                                  ('reader1', 'read789', '王五', '13700137003', 'reader'),
+                                                                  ('reader2', 'read012', '赵六', '13600136004', 'reader');
+
+-- 插入小说数据（每个作者2部小说）
+INSERT INTO novels (title, genre, description, author, status, cover_image) VALUES
+                                                                                ('校园风云录', '校园', '讲述大学生活的青春故事', 'author1', 'serializing', '/covers/campus1.jpg'),
+                                                                                ('科技之光', '科幻', '未来世界的科技冒险', 'author1', 'completed', '/covers/science1.jpg'),
+                                                                                ('江湖夜雨', '武侠', '古代侠客的恩怨情仇', 'author2', 'serializing', '/covers/wuxia1.jpg'),
+                                                                                ('星际争霸', '科幻', '人类与外星文明的战争', 'author2', 'completed', '/covers/space1.jpg');
+
+-- 插入章节数据（每部小说3章）
+INSERT INTO chapters (novel_id, chapter_order, title, content, publish_status) VALUES
+                                                                                   (1, 1, '新生报道', '九月的阳光洒在校园的林荫道上...', 'published'),
+                                                                                   (1, 2, '社团招新', '学生会的摊位前人来人往...', 'published'),
+                                                                                   (1, 3, '第一次考试', '教室里弥漫着紧张的气氛...', 'reviewing'),
+                                                                                   (2, 1, '量子实验室', '林教授站在巨大的粒子对撞机前...', 'published'),
+                                                                                   (2, 2, '时空裂缝', '一道奇异的光芒突然出现在实验室中央...', 'published'),
+                                                                                   (2, 3, '平行世界', '当陈博士睁开眼睛时...', 'published'),
+                                                                                   (3, 1, '初入江湖', '少年提着一把生锈的长剑...', 'published'),
+                                                                                   (3, 2, '比武大会', '武林广场上人山人海...', 'submitted'),
+                                                                                   (3, 3, '神秘高手', '角落里突然传来一阵低沉的咳嗽声...', 'saved'),
+                                                                                   (4, 1, '星际舰队', '地球联合舰队整装待发...', 'published'),
+                                                                                   (4, 2, '外星文明', '雷达屏幕上出现了不明飞行物...', 'published'),
+                                                                                   (4, 3, '最终决战', '舰长按下了发射按钮...', 'published');
+
+-- 插入评价数据（每部小说2条评价）
+INSERT INTO reviews (novel_id, account, rating, comment) VALUES
+                                                             (1, 'reader1', 8, '剧情很真实，仿佛回到了我的大学时光'),
+                                                             (1, 'reader2', 7, '主角的性格很有感染力'),
+                                                             (2, 'reader1', 9, '科技设定很新颖，让人眼前一亮'),
+                                                             (2, 'reader2', 8, '结局有点仓促，希望能出续集'),
+                                                             (3, 'reader1', 8, '武侠风格很正宗，打斗场面描写精彩'),
+                                                             (3, 'reader2', 7, '情节发展有点慢，希望节奏能加快'),
+                                                             (4, 'reader1', 9, '星际战争描写得很震撼'),
+                                                             (4, 'reader2', 8, '人物刻画很到位，每个角色都有血有肉');

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.TChaptersMapper">
+  <resultMap id="BaseResultMap" type="model.TChapters">
+    <id column="chapter_id" jdbcType="INTEGER" property="chapterId" />
+    <result column="novel_id" jdbcType="INTEGER" property="novelId" />
+    <result column="chapter_order" jdbcType="INTEGER" property="chapterOrder" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="publish_status" jdbcType="CHAR" property="publishStatus" />
+    <result column="last_modified" jdbcType="TIMESTAMP" property="lastModified" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="model.TChapters">
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    chapter_id, novel_id, chapter_order, title, publish_status, last_modified
+  </sql>
+  <sql id="Blob_Column_List">
+    content
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_chapters
+    where chapter_id = #{chapterId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_chapters
+    where chapter_id = #{chapterId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="model.TChapters">
+    insert into t_chapters (chapter_id, novel_id, chapter_order, 
+      title, publish_status, last_modified, 
+      content)
+    values (#{chapterId,jdbcType=INTEGER}, #{novelId,jdbcType=INTEGER}, #{chapterOrder,jdbcType=INTEGER}, 
+      #{title,jdbcType=VARCHAR}, #{publishStatus,jdbcType=CHAR}, #{lastModified,jdbcType=TIMESTAMP}, 
+      #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="model.TChapters">
+    insert into t_chapters
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="chapterId != null">
+        chapter_id,
+      </if>
+      <if test="novelId != null">
+        novel_id,
+      </if>
+      <if test="chapterOrder != null">
+        chapter_order,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="publishStatus != null">
+        publish_status,
+      </if>
+      <if test="lastModified != null">
+        last_modified,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="chapterId != null">
+        #{chapterId,jdbcType=INTEGER},
+      </if>
+      <if test="novelId != null">
+        #{novelId,jdbcType=INTEGER},
+      </if>
+      <if test="chapterOrder != null">
+        #{chapterOrder,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="publishStatus != null">
+        #{publishStatus,jdbcType=CHAR},
+      </if>
+      <if test="lastModified != null">
+        #{lastModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="model.TChapters">
+    update t_chapters
+    <set>
+      <if test="novelId != null">
+        novel_id = #{novelId,jdbcType=INTEGER},
+      </if>
+      <if test="chapterOrder != null">
+        chapter_order = #{chapterOrder,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="publishStatus != null">
+        publish_status = #{publishStatus,jdbcType=CHAR},
+      </if>
+      <if test="lastModified != null">
+        last_modified = #{lastModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where chapter_id = #{chapterId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="model.TChapters">
+    update t_chapters
+    set novel_id = #{novelId,jdbcType=INTEGER},
+      chapter_order = #{chapterOrder,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      publish_status = #{publishStatus,jdbcType=CHAR},
+      last_modified = #{lastModified,jdbcType=TIMESTAMP},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where chapter_id = #{chapterId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="model.TChapters">
+    update t_chapters
+    set novel_id = #{novelId,jdbcType=INTEGER},
+      chapter_order = #{chapterOrder,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      publish_status = #{publishStatus,jdbcType=CHAR},
+      last_modified = #{lastModified,jdbcType=TIMESTAMP}
+    where chapter_id = #{chapterId,jdbcType=INTEGER}
+  </update>
+
+
+  <select id="selectSelective" parameterType="model.TChapters" resultType="model.TChapters">
+    select  * from t_chapters
+    <where>
+      <trim suffixOverrides="and">
+        <if test="novelId != null">
+          novel_id LIKE concat('%', #{novelId}, '%') and
+        </if>
+        <if test="chapterOrder != null">
+          chapter_order LIKE concat('%', #{chapterOrder}, '%') and
+        </if>
+        <if test="title != null">
+          title LIKE concat('%', #{title}, '%') and
+        </if>
+        <if test="publishStatus != null">
+          publish_status LIKE concat('%', #{publishStatus}, '%') and
+        </if>
+        <if test="lastModified != null">
+          last_modified LIKE concat('%', #{lastModified}, '%') and
+        </if>
+        <if test="content != null">
+          content LIKE concat('%', #{content}, '%') and
+        </if>
+      </trim>
+    </where>
+  </select>
+
+</mapper>

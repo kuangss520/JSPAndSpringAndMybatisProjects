@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.TUserssMapper">
+  <resultMap id="BaseResultMap" type="model.TUserss">
+    <id column="account" jdbcType="VARCHAR" property="account" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="user_type" jdbcType="CHAR" property="userType" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    account, password, name, phone, user_type
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_userss
+    where account = #{account,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_userss
+    where account = #{account,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="model.TUserss">
+    insert into t_userss (account, password, name, 
+      phone, user_type)
+    values (#{account,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{userType,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="model.TUserss">
+    insert into t_userss
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="account != null">
+        account,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="userType != null">
+        user_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="account != null">
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null">
+        #{userType,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="model.TUserss">
+    update t_userss
+    <set>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null">
+        user_type = #{userType,jdbcType=CHAR},
+      </if>
+    </set>
+    where account = #{account,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="model.TUserss">
+    update t_userss
+    set password = #{password,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      user_type = #{userType,jdbcType=CHAR}
+    where account = #{account,jdbcType=VARCHAR}
+  </update>
+
+  <select id="selectSelective" parameterType="model.TUserss" resultType="model.TUserss">
+    select  * from t_userss
+    <where>
+      <trim suffixOverrides="and">
+        <if test="password != null">
+          password LIKE concat('%', #{password}, '%') and
+        </if>
+        <if test="name != null">
+          name LIKE concat('%', #{name}, '%') and
+        </if>
+        <if test="phone != null">
+          phone LIKE concat('%', #{phone}, '%') and
+        </if>
+        <if test="userType != null">
+          user_type LIKE concat('%', #{userType}, '%') and
+        </if>
+      </trim>
+    </where>
+  </select>
+
+</mapper>

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.TNovelsMapper">
+  <resultMap id="BaseResultMap" type="model.TNovels">
+    <id column="novel_id" jdbcType="INTEGER" property="novelId" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="genre" jdbcType="VARCHAR" property="genre" />
+    <result column="author" jdbcType="VARCHAR" property="author" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="status" jdbcType="CHAR" property="status" />
+    <result column="cover_image" jdbcType="VARCHAR" property="coverImage" />
+    <result column="total_rating" jdbcType="DECIMAL" property="totalRating" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="model.TNovels">
+    <result column="description" jdbcType="LONGVARCHAR" property="description" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    novel_id, title, genre, author, create_date, status, cover_image, total_rating
+  </sql>
+  <sql id="Blob_Column_List">
+    description
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_novels
+    where novel_id = #{novelId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_novels
+    where novel_id = #{novelId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="model.TNovels">
+    insert into t_novels (novel_id, title, genre, 
+      author, create_date, status, 
+      cover_image, total_rating, description
+      )
+    values (#{novelId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{genre,jdbcType=VARCHAR}, 
+      #{author,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{status,jdbcType=CHAR}, 
+      #{coverImage,jdbcType=VARCHAR}, #{totalRating,jdbcType=DECIMAL}, #{description,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="model.TNovels">
+    insert into t_novels
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="novelId != null">
+        novel_id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="genre != null">
+        genre,
+      </if>
+      <if test="author != null">
+        author,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="coverImage != null">
+        cover_image,
+      </if>
+      <if test="totalRating != null">
+        total_rating,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="novelId != null">
+        #{novelId,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="genre != null">
+        #{genre,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null">
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="coverImage != null">
+        #{coverImage,jdbcType=VARCHAR},
+      </if>
+      <if test="totalRating != null">
+        #{totalRating,jdbcType=DECIMAL},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="model.TNovels">
+    update t_novels
+    <set>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="genre != null">
+        genre = #{genre,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null">
+        author = #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="coverImage != null">
+        cover_image = #{coverImage,jdbcType=VARCHAR},
+      </if>
+      <if test="totalRating != null">
+        total_rating = #{totalRating,jdbcType=DECIMAL},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where novel_id = #{novelId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="model.TNovels">
+    update t_novels
+    set title = #{title,jdbcType=VARCHAR},
+      genre = #{genre,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=CHAR},
+      cover_image = #{coverImage,jdbcType=VARCHAR},
+      total_rating = #{totalRating,jdbcType=DECIMAL},
+      description = #{description,jdbcType=LONGVARCHAR}
+    where novel_id = #{novelId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="model.TNovels">
+    update t_novels
+    set title = #{title,jdbcType=VARCHAR},
+      genre = #{genre,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=CHAR},
+      cover_image = #{coverImage,jdbcType=VARCHAR},
+      total_rating = #{totalRating,jdbcType=DECIMAL}
+    where novel_id = #{novelId,jdbcType=INTEGER}
+  </update>
+
+
+  <select id="selectSelective" parameterType="model.TNovels" resultType="model.TNovels">
+    select  * from t_novels
+    <where>
+      <trim suffixOverrides="and">
+        <if test="title != null">
+          title LIKE concat('%', #{title}, '%') and
+        </if>
+        <if test="genre != null">
+          genre LIKE concat('%', #{genre}, '%') and
+        </if>
+        <if test="author != null">
+          author LIKE concat('%', #{author}, '%') and
+        </if>
+        <if test="createDate != null">
+          create_date LIKE concat('%', #{createDate}, '%') and
+        </if>
+        <if test="status != null">
+          status LIKE concat('%', #{status}, '%') and
+        </if>
+        <if test="coverImage != null">
+          cover_image LIKE concat('%', #{coverImage}, '%') and
+        </if>
+        <if test="totalRating != null">
+          total_rating LIKE concat('%', #{totalRating}, '%') and
+        </if>
+        <if test="description != null">
+          description LIKE concat('%', #{description}, '%') and
+        </if>
+      </trim>
+    </where>
+  </select>
+
+</mapper>
