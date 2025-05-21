@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.TTicketMapper">
+    <resultMap id="BaseResultMap" type="model.TTicket">
+        <id column="ticket_id" jdbcType="INTEGER" property="ticketId"/>
+        <result column="flight_id" jdbcType="INTEGER" property="flightId"/>
+        <result column="seat_number" jdbcType="VARCHAR" property="seatNumber"/>
+        <result column="id_card" jdbcType="VARCHAR" property="idCard"/>
+        <result column="status" jdbcType="CHAR" property="status"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        ticket_id
+        , flight_id, seat_number, id_card, status
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_ticket
+        where ticket_id = #{ticketId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from t_ticket
+        where ticket_id = #{ticketId,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="model.TTicket">
+        insert into t_ticket (ticket_id, flight_id, seat_number,
+                              id_card, status)
+        values (#{ticketId,jdbcType=INTEGER}, #{flightId,jdbcType=INTEGER}, #{seatNumber,jdbcType=VARCHAR},
+                #{idCard,jdbcType=VARCHAR}, #{status,jdbcType=CHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="model.TTicket">
+        insert into t_ticket
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ticketId != null">
+                ticket_id,
+            </if>
+            <if test="flightId != null">
+                flight_id,
+            </if>
+            <if test="seatNumber != null">
+                seat_number,
+            </if>
+            <if test="idCard != null">
+                id_card,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="ticketId != null">
+                #{ticketId,jdbcType=INTEGER},
+            </if>
+            <if test="flightId != null">
+                #{flightId,jdbcType=INTEGER},
+            </if>
+            <if test="seatNumber != null">
+                #{seatNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="idCard != null">
+                #{idCard,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=CHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="model.TTicket">
+        update t_ticket
+        <set>
+            <if test="flightId != null">
+                flight_id = #{flightId,jdbcType=INTEGER},
+            </if>
+            <if test="seatNumber != null">
+                seat_number = #{seatNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="idCard != null">
+                id_card = #{idCard,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=CHAR},
+            </if>
+        </set>
+        where ticket_id = #{ticketId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="model.TTicket">
+        update t_ticket
+        set flight_id   = #{flightId,jdbcType=INTEGER},
+            seat_number = #{seatNumber,jdbcType=VARCHAR},
+            id_card     = #{idCard,jdbcType=VARCHAR},
+            status      = #{status,jdbcType=CHAR}
+        where ticket_id = #{ticketId,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectSelective" parameterType="model.TTicket" resultType="model.TTicket">
+        select * from t_ticket
+        <where>
+            <trim suffixOverrides="and">
+                <if test="flightId != null">
+                    flight_id LIKE concat('%', #{flightId}, '%') and
+                </if>
+                <if test="ticketId != null">
+                    ticket_id LIKE concat('%', #{ticketId}, '%') and
+                </if>
+                <if test="idCard != null">
+                    id_card LIKE concat('%', #{idCard}, '%') and
+                </if>
+                <if test="status != null">
+                    status LIKE concat('%', #{status}, '%') and
+                </if>
+            </trim>
+        </where>
+    </select>
+
+
+</mapper>

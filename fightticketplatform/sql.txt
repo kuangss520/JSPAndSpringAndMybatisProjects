@@ -1,0 +1,91 @@
+-- 航班信息表
+CREATE TABLE t_flight (
+    flight_id INT PRIMARY KEY AUTO_INCREMENT COMMENT '航班ID',
+    flight_number VARCHAR(20) NOT NULL COMMENT '航班编号',
+    airline VARCHAR(50) NOT NULL COMMENT '航空公司',
+    aircraft_type VARCHAR(30) COMMENT '飞机机型',
+    departure_port VARCHAR(50) NOT NULL COMMENT '始发港',
+    arrival_port VARCHAR(50) NOT NULL COMMENT '到达港',
+    flight_date DATE NOT NULL COMMENT '航班日期',
+    departure_time TIME NOT NULL COMMENT '起飞时间',
+    arrival_time TIME NOT NULL COMMENT '到达时间',
+    seat_count INT NOT NULL COMMENT '座位数',
+    UNIQUE KEY unique_flight (flight_number, flight_date)
+);
+
+-- 旅客信息表
+CREATE TABLE t_passenger (
+    id_card VARCHAR(18) PRIMARY KEY COMMENT '身份证号码',
+    name VARCHAR(50) NOT NULL COMMENT '姓名',
+    password VARCHAR(100) NOT NULL COMMENT '登录密码',
+    gender ENUM('男', '女', '其他') COMMENT '性别',
+    birth_date DATE COMMENT '出生日期',
+    phone VARCHAR(20) NOT NULL COMMENT '手机号码',
+    contact_name VARCHAR(50) COMMENT '联系人姓名',
+    contact_phone VARCHAR(20) COMMENT '联系人电话号码'
+);
+
+-- 机票信息表
+CREATE TABLE t_ticket (
+    ticket_id INT PRIMARY KEY AUTO_INCREMENT COMMENT '机票ID',
+    flight_id INT NOT NULL COMMENT '航班ID',
+    seat_number VARCHAR(10) NOT NULL COMMENT '座位号',
+    id_card VARCHAR(18) COMMENT '身份证号码',
+    status ENUM('未售出', '已售出', '已退票') NOT NULL DEFAULT '未售出' COMMENT '机票状态',
+    FOREIGN KEY (flight_id) REFERENCES t_flight(flight_id),
+    FOREIGN KEY (id_card) REFERENCES t_passenger(id_card),
+    UNIQUE KEY unique_seat (flight_id, seat_number)
+);
+
+-- 管理员信息表
+CREATE TABLE t_admin (
+    admin_account VARCHAR(20) PRIMARY KEY COMMENT '账号',
+    password VARCHAR(100) NOT NULL COMMENT '密码',
+    nickname VARCHAR(50) NOT NULL COMMENT '昵称',
+    phone VARCHAR(20) NOT NULL COMMENT '手机号码'
+);
+
+-- 机票视图
+CREATE VIEW v_ticket_info AS
+SELECT 
+    t.ticket_id,
+    t.flight_id,
+    f.flight_number,
+    f.airline,
+    f.departure_port,
+    f.arrival_port,
+    f.flight_date,
+    f.departure_time,
+    f.arrival_time,
+    t.seat_number,
+    t.status,
+    p.id_card,
+    p.name,
+    p.phone
+FROM t_ticket t
+JOIN t_flight f ON t.flight_id = f.flight_id
+LEFT JOIN t_passenger p ON t.id_card = p.id_card;
+
+-- 插入测试数据
+INSERT INTO t_flight (flight_number, airline, aircraft_type, departure_port, arrival_port, flight_date, departure_time, arrival_time, seat_count) VALUES
+('CA1234', '中国国际航空', '波音737-800', '北京首都国际机场', '上海浦东国际机场', '2023-10-15', '08:30:00', '10:55:00', 180),
+('MU2567', '东方航空', '空客A320', '上海虹桥国际机场', '广州白云国际机场', '2023-10-15', '12:15:00', '14:45:00', 156),
+('CZ3456', '南方航空', '波音787', '广州白云国际机场', '深圳宝安国际机场', '2023-10-15', '16:30:00', '17:45:00', 220),
+('ZH9876', '深圳航空', '空客A330', '深圳宝安国际机场', '北京大兴国际机场', '2023-10-16', '09:45:00', '12:30:00', 250);
+
+INSERT INTO t_passenger (id_card, name, password, gender, birth_date, phone, contact_name, contact_phone) VALUES
+('110101199001011234', '张三', 'pass123', '男', '1990-01-01', '13800138001', '李四', '13900139002'),
+('120101199102021235', '王五', 'pass456', '女', '1991-02-02', '13900139003', '赵六', '13800138004'),
+('130101199203031236', '孙七', 'pass789', '男', '1992-03-03', '13700137005', '周八', '13600136006');
+
+INSERT INTO t_ticket (flight_id, seat_number, id_card, status) VALUES
+(1, 'A1', '110101199001011234', '已售出'),
+(1, 'A2', '120101199102021235', '已售出'),
+(1, 'A3', NULL, '未售出'),
+(2, 'B5', '130101199203031236', '已售出'),
+(3, 'C10', NULL, '未售出'),
+(4, 'D15', '110101199001011234', '已售出');
+
+INSERT INTO t_admin (admin_account, password, nickname, phone) VALUES
+('admin001', 'admin123', '管理员A', '13500135001'),
+('admin002', 'admin456', '管理员B', '13600136002');

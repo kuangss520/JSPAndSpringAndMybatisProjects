@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.TAdminMapper">
+  <resultMap id="BaseResultMap" type="model.TAdmin">
+    <id column="admin_account" jdbcType="VARCHAR" property="adminAccount" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    admin_account, password, nickname, phone
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_admin
+    where admin_account = #{adminAccount,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_admin
+    where admin_account = #{adminAccount,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="model.TAdmin">
+    insert into t_admin (admin_account, password, nickname, 
+      phone)
+    values (#{adminAccount,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="model.TAdmin">
+    insert into t_admin
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="adminAccount != null">
+        admin_account,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="nickname != null">
+        nickname,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="adminAccount != null">
+        #{adminAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null">
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="model.TAdmin">
+    update t_admin
+    <set>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null">
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where admin_account = #{adminAccount,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="model.TAdmin">
+    update t_admin
+    set password = #{password,jdbcType=VARCHAR},
+      nickname = #{nickname,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR}
+    where admin_account = #{adminAccount,jdbcType=VARCHAR}
+  </update>
+
+  <select id="selectSelective" parameterType="model.TAdmin" resultType="model.TAdmin">
+    select  * from t_admin
+    <where>
+      <trim suffixOverrides="and">
+        <if test="password != null">
+          password LIKE concat('%', #{password}, '%') and
+        </if>
+        <if test="nickname != null">
+          nickname LIKE concat('%', #{nickname}, '%') and
+        </if>
+        <if test="phone != null">
+          phone LIKE concat('%', #{phone}, '%') and
+        </if>
+      </trim>
+    </where>
+  </select>
+
+
+
+</mapper>

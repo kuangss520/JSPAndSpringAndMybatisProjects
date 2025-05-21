@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.TFlightMapper">
+  <resultMap id="BaseResultMap" type="model.TFlight">
+    <id column="flight_id" jdbcType="INTEGER" property="flightId" />
+    <result column="flight_number" jdbcType="VARCHAR" property="flightNumber" />
+    <result column="airline" jdbcType="VARCHAR" property="airline" />
+    <result column="aircraft_type" jdbcType="VARCHAR" property="aircraftType" />
+    <result column="departure_port" jdbcType="VARCHAR" property="departurePort" />
+    <result column="arrival_port" jdbcType="VARCHAR" property="arrivalPort" />
+    <result column="flight_date" jdbcType="DATE" property="flightDate" />
+    <result column="departure_time" jdbcType="TIME" property="departureTime" />
+    <result column="arrival_time" jdbcType="TIME" property="arrivalTime" />
+    <result column="seat_count" jdbcType="INTEGER" property="seatCount" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    flight_id, flight_number, airline, aircraft_type, departure_port, arrival_port, flight_date, 
+    departure_time, arrival_time, seat_count
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_flight
+    where flight_id = #{flightId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_flight
+    where flight_id = #{flightId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="model.TFlight">
+    insert into t_flight (flight_id, flight_number, airline, 
+      aircraft_type, departure_port, arrival_port, 
+      flight_date, departure_time, arrival_time, 
+      seat_count)
+    values (#{flightId,jdbcType=INTEGER}, #{flightNumber,jdbcType=VARCHAR}, #{airline,jdbcType=VARCHAR}, 
+      #{aircraftType,jdbcType=VARCHAR}, #{departurePort,jdbcType=VARCHAR}, #{arrivalPort,jdbcType=VARCHAR}, 
+      #{flightDate,jdbcType=DATE}, #{departureTime,jdbcType=TIME}, #{arrivalTime,jdbcType=TIME}, 
+      #{seatCount,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="model.TFlight">
+    insert into t_flight
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="flightId != null">
+        flight_id,
+      </if>
+      <if test="flightNumber != null">
+        flight_number,
+      </if>
+      <if test="airline != null">
+        airline,
+      </if>
+      <if test="aircraftType != null">
+        aircraft_type,
+      </if>
+      <if test="departurePort != null">
+        departure_port,
+      </if>
+      <if test="arrivalPort != null">
+        arrival_port,
+      </if>
+      <if test="flightDate != null">
+        flight_date,
+      </if>
+      <if test="departureTime != null">
+        departure_time,
+      </if>
+      <if test="arrivalTime != null">
+        arrival_time,
+      </if>
+      <if test="seatCount != null">
+        seat_count,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="flightId != null">
+        #{flightId,jdbcType=INTEGER},
+      </if>
+      <if test="flightNumber != null">
+        #{flightNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="airline != null">
+        #{airline,jdbcType=VARCHAR},
+      </if>
+      <if test="aircraftType != null">
+        #{aircraftType,jdbcType=VARCHAR},
+      </if>
+      <if test="departurePort != null">
+        #{departurePort,jdbcType=VARCHAR},
+      </if>
+      <if test="arrivalPort != null">
+        #{arrivalPort,jdbcType=VARCHAR},
+      </if>
+      <if test="flightDate != null">
+        #{flightDate,jdbcType=DATE},
+      </if>
+      <if test="departureTime != null">
+        #{departureTime,jdbcType=TIME},
+      </if>
+      <if test="arrivalTime != null">
+        #{arrivalTime,jdbcType=TIME},
+      </if>
+      <if test="seatCount != null">
+        #{seatCount,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="model.TFlight">
+    update t_flight
+    <set>
+      <if test="flightNumber != null">
+        flight_number = #{flightNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="airline != null">
+        airline = #{airline,jdbcType=VARCHAR},
+      </if>
+      <if test="aircraftType != null">
+        aircraft_type = #{aircraftType,jdbcType=VARCHAR},
+      </if>
+      <if test="departurePort != null">
+        departure_port = #{departurePort,jdbcType=VARCHAR},
+      </if>
+      <if test="arrivalPort != null">
+        arrival_port = #{arrivalPort,jdbcType=VARCHAR},
+      </if>
+      <if test="flightDate != null">
+        flight_date = #{flightDate,jdbcType=DATE},
+      </if>
+      <if test="departureTime != null">
+        departure_time = #{departureTime,jdbcType=TIME},
+      </if>
+      <if test="arrivalTime != null">
+        arrival_time = #{arrivalTime,jdbcType=TIME},
+      </if>
+      <if test="seatCount != null">
+        seat_count = #{seatCount,jdbcType=INTEGER},
+      </if>
+    </set>
+    where flight_id = #{flightId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="model.TFlight">
+    update t_flight
+    set flight_number = #{flightNumber,jdbcType=VARCHAR},
+      airline = #{airline,jdbcType=VARCHAR},
+      aircraft_type = #{aircraftType,jdbcType=VARCHAR},
+      departure_port = #{departurePort,jdbcType=VARCHAR},
+      arrival_port = #{arrivalPort,jdbcType=VARCHAR},
+      flight_date = #{flightDate,jdbcType=DATE},
+      departure_time = #{departureTime,jdbcType=TIME},
+      arrival_time = #{arrivalTime,jdbcType=TIME},
+      seat_count = #{seatCount,jdbcType=INTEGER}
+    where flight_id = #{flightId,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectSelective" parameterType="model.TFlight" resultType="model.TFlight">
+    select  * from t_flight
+    <where>
+      <trim suffixOverrides="and">
+        <if test="flightNumber != null">
+          flight_number LIKE concat('%', #{flightNumber}, '%') and
+        </if>
+        <if test="airline != null">
+          airline LIKE concat('%', #{airline}, '%') and
+        </if>
+        <if test="aircraftType != null">
+          aircraft_type LIKE concat('%', #{aircraftType}, '%') and
+        </if>
+        <if test="departurePort != null">
+          departure_port LIKE concat('%', #{departurePort}, '%') and
+        </if>
+        <if test="arrivalPort != null">
+          arrival_port LIKE concat('%', #{arrivalPort}, '%') and
+        </if>
+        <if test="flightDate != null">
+          flight_date LIKE concat('%', #{flightDate}, '%') and
+        </if>
+        <if test="departureTime != null">
+          departure_time LIKE concat('%', #{departureTime}, '%') and
+        </if>
+        <if test="arrivalTime != null">
+          arrival_time LIKE concat('%', #{arrivalTime}, '%') and
+        </if>
+        <if test="seatCount != null">
+          seat_count LIKE concat('%', #{seatCount}, '%') and
+        </if>
+      </trim>
+    </where>
+  </select>
+
+
+</mapper>

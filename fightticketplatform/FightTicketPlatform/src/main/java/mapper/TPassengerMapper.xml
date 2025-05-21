@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.TPassengerMapper">
+  <resultMap id="BaseResultMap" type="model.TPassenger">
+    <id column="id_card" jdbcType="VARCHAR" property="idCard" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="gender" jdbcType="CHAR" property="gender" />
+    <result column="birth_date" jdbcType="DATE" property="birthDate" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="contact_name" jdbcType="VARCHAR" property="contactName" />
+    <result column="contact_phone" jdbcType="VARCHAR" property="contactPhone" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id_card, name, password, gender, birth_date, phone, contact_name, contact_phone
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_passenger
+    where id_card = #{idCard,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_passenger
+    where id_card = #{idCard,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="model.TPassenger">
+    insert into t_passenger (id_card, name, password, 
+      gender, birth_date, phone, 
+      contact_name, contact_phone)
+    values (#{idCard,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{gender,jdbcType=CHAR}, #{birthDate,jdbcType=DATE}, #{phone,jdbcType=VARCHAR}, 
+      #{contactName,jdbcType=VARCHAR}, #{contactPhone,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="model.TPassenger">
+    insert into t_passenger
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="idCard != null">
+        id_card,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="gender != null">
+        gender,
+      </if>
+      <if test="birthDate != null">
+        birth_date,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="contactName != null">
+        contact_name,
+      </if>
+      <if test="contactPhone != null">
+        contact_phone,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="idCard != null">
+        #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        #{gender,jdbcType=CHAR},
+      </if>
+      <if test="birthDate != null">
+        #{birthDate,jdbcType=DATE},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="contactName != null">
+        #{contactName,jdbcType=VARCHAR},
+      </if>
+      <if test="contactPhone != null">
+        #{contactPhone,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="model.TPassenger">
+    update t_passenger
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        gender = #{gender,jdbcType=CHAR},
+      </if>
+      <if test="birthDate != null">
+        birth_date = #{birthDate,jdbcType=DATE},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="contactName != null">
+        contact_name = #{contactName,jdbcType=VARCHAR},
+      </if>
+      <if test="contactPhone != null">
+        contact_phone = #{contactPhone,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id_card = #{idCard,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="model.TPassenger">
+    update t_passenger
+    set name = #{name,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=CHAR},
+      birth_date = #{birthDate,jdbcType=DATE},
+      phone = #{phone,jdbcType=VARCHAR},
+      contact_name = #{contactName,jdbcType=VARCHAR},
+      contact_phone = #{contactPhone,jdbcType=VARCHAR}
+    where id_card = #{idCard,jdbcType=VARCHAR}
+  </update>
+
+  <select id="selectSelective" parameterType="model.TPassenger" resultType="model.TPassenger">
+    select  * from t_passenger
+    <where>
+      <trim suffixOverrides="and">
+        <if test="name != null">
+          name LIKE concat('%', #{name}, '%') and
+        </if>
+        <if test="password != null">
+          password = #{password,jdbcType=VARCHAR} and
+        </if>
+        <if test="gender != null">
+          gender = #{gender,jdbcType=CHAR} and
+        </if>
+        <if test="birthDate != null">
+          birth_date = #{birthDate,jdbcType=DATE} and
+        </if>
+        <if test="phone != null">
+          phone = #{phone,jdbcType=VARCHAR} and
+        </if>
+        <if test="contactName != null">
+          contact_name LIKE concat('%', #{contactName}, '%') and
+        </if>
+        <if test="contactPhone != null">
+          contact_phone = #{contactPhone,jdbcType=VARCHAR} and
+        </if>
+      </trim>
+    </where>
+  </select>
+
+
+
+</mapper>
