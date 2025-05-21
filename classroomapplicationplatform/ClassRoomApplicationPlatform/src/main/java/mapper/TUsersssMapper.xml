@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.TUsersssMapper">
+  <resultMap id="BaseResultMap" type="model.TUsersss">
+    <id column="staff_id" jdbcType="VARCHAR" property="staffId" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="gender" jdbcType="CHAR" property="gender" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="user_type" jdbcType="CHAR" property="userType" />
+    <result column="college" jdbcType="VARCHAR" property="college" />
+    <result column="job_type" jdbcType="CHAR" property="jobType" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    staff_id, password, name, gender, phone, user_type, college, job_type
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_usersss
+    where staff_id = #{staffId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_usersss
+    where staff_id = #{staffId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="model.TUsersss">
+    insert into t_usersss (staff_id, password, name, 
+      gender, phone, user_type, 
+      college, job_type)
+    values (#{staffId,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{gender,jdbcType=CHAR}, #{phone,jdbcType=VARCHAR}, #{userType,jdbcType=CHAR}, 
+      #{college,jdbcType=VARCHAR}, #{jobType,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="model.TUsersss">
+    insert into t_usersss
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="staffId != null">
+        staff_id,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="gender != null">
+        gender,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="userType != null">
+        user_type,
+      </if>
+      <if test="college != null">
+        college,
+      </if>
+      <if test="jobType != null">
+        job_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="staffId != null">
+        #{staffId,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        #{gender,jdbcType=CHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null">
+        #{userType,jdbcType=CHAR},
+      </if>
+      <if test="college != null">
+        #{college,jdbcType=VARCHAR},
+      </if>
+      <if test="jobType != null">
+        #{jobType,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="model.TUsersss">
+    update t_usersss
+    <set>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        gender = #{gender,jdbcType=CHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null">
+        user_type = #{userType,jdbcType=CHAR},
+      </if>
+      <if test="college != null">
+        college = #{college,jdbcType=VARCHAR},
+      </if>
+      <if test="jobType != null">
+        job_type = #{jobType,jdbcType=CHAR},
+      </if>
+    </set>
+    where staff_id = #{staffId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="model.TUsersss">
+    update t_usersss
+    set password = #{password,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=CHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      user_type = #{userType,jdbcType=CHAR},
+      college = #{college,jdbcType=VARCHAR},
+      job_type = #{jobType,jdbcType=CHAR}
+    where staff_id = #{staffId,jdbcType=VARCHAR}
+  </update>
+
+
+  <select id="selectSelective" parameterType="model.TUsersss" resultType="model.TUsersss">
+    select  * from t_usersss
+    <where>
+      <trim suffixOverrides="and">
+        <if test="password != null">
+          password LIKE concat('%', #{password}, '%') and
+        </if>
+        <if test="name != null">
+          name LIKE concat('%', #{name}, '%') and
+        </if>
+        <if test="gender != null">
+          gender LIKE concat('%', #{gender}, '%') and
+        </if>
+        <if test="phone != null">
+          phone LIKE concat('%', #{phone}, '%') and
+        </if>
+        <if test="userType != null">
+          user_type LIKE concat('%', #{userType}, '%') and
+        </if>
+        <if test="college != null">
+          college LIKE concat('%', #{college}, '%') and
+        </if>
+        <if test="jobType != null">
+          job_type LIKE concat('%', #{jobType}, '%') and
+        </if>
+      </trim>
+    </where>
+  </select>
+
+</mapper>

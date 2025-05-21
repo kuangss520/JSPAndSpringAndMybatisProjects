@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.TApplicationMapper">
+  <resultMap id="BaseResultMap" type="model.TApplication">
+    <id column="application_id" jdbcType="INTEGER" property="applicationId" />
+    <result column="classroom_id" jdbcType="INTEGER" property="classroomId" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="apply_date" jdbcType="DATE" property="applyDate" />
+    <result column="use_date" jdbcType="DATE" property="useDate" />
+    <result column="start_time" jdbcType="TIME" property="startTime" />
+    <result column="end_time" jdbcType="TIME" property="endTime" />
+    <result column="status" jdbcType="CHAR" property="status" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="model.TApplication">
+    <result column="purpose" jdbcType="LONGVARCHAR" property="purpose" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    application_id, classroom_id, user_id, apply_date, use_date, start_time, end_time, 
+    status
+  </sql>
+  <sql id="Blob_Column_List">
+    purpose
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_application
+    where application_id = #{applicationId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_application
+    where application_id = #{applicationId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="model.TApplication">
+    insert into t_application (application_id, classroom_id, user_id, 
+      apply_date, use_date, start_time, 
+      end_time, status, purpose
+      )
+    values (#{applicationId,jdbcType=INTEGER}, #{classroomId,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR}, 
+      #{applyDate,jdbcType=DATE}, #{useDate,jdbcType=DATE}, #{startTime,jdbcType=TIME}, 
+      #{endTime,jdbcType=TIME}, #{status,jdbcType=CHAR}, #{purpose,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="model.TApplication">
+    insert into t_application
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="applicationId != null">
+        application_id,
+      </if>
+      <if test="classroomId != null">
+        classroom_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="applyDate != null">
+        apply_date,
+      </if>
+      <if test="useDate != null">
+        use_date,
+      </if>
+      <if test="startTime != null">
+        start_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="purpose != null">
+        purpose,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="applicationId != null">
+        #{applicationId,jdbcType=INTEGER},
+      </if>
+      <if test="classroomId != null">
+        #{classroomId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="applyDate != null">
+        #{applyDate,jdbcType=DATE},
+      </if>
+      <if test="useDate != null">
+        #{useDate,jdbcType=DATE},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=TIME},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIME},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="purpose != null">
+        #{purpose,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="model.TApplication">
+    update t_application
+    <set>
+      <if test="classroomId != null">
+        classroom_id = #{classroomId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="applyDate != null">
+        apply_date = #{applyDate,jdbcType=DATE},
+      </if>
+      <if test="useDate != null">
+        use_date = #{useDate,jdbcType=DATE},
+      </if>
+      <if test="startTime != null">
+        start_time = #{startTime,jdbcType=TIME},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=TIME},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="purpose != null">
+        purpose = #{purpose,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where application_id = #{applicationId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="model.TApplication">
+    update t_application
+    set classroom_id = #{classroomId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=VARCHAR},
+      apply_date = #{applyDate,jdbcType=DATE},
+      use_date = #{useDate,jdbcType=DATE},
+      start_time = #{startTime,jdbcType=TIME},
+      end_time = #{endTime,jdbcType=TIME},
+      status = #{status,jdbcType=CHAR},
+      purpose = #{purpose,jdbcType=LONGVARCHAR}
+    where application_id = #{applicationId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="model.TApplication">
+    update t_application
+    set classroom_id = #{classroomId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=VARCHAR},
+      apply_date = #{applyDate,jdbcType=DATE},
+      use_date = #{useDate,jdbcType=DATE},
+      start_time = #{startTime,jdbcType=TIME},
+      end_time = #{endTime,jdbcType=TIME},
+      status = #{status,jdbcType=CHAR}
+    where application_id = #{applicationId,jdbcType=INTEGER}
+  </update>
+
+
+  <select id="selectSelective" parameterType="model.TApplication" resultType="model.TApplication">
+    select  * from t_application
+    <where>
+      <trim suffixOverrides="and">
+        <if test="classroomId != null">
+          classroom_id LIKE concat('%', #{classroomId}, '%') and
+        </if>
+        <if test="userId != null">
+          user_id LIKE concat('%', #{userId}, '%') and
+        </if>
+        <if test="applyDate != null">
+          apply_date LIKE concat('%', #{applyDate}, '%') and
+        </if>
+        <if test="useDate != null">
+          use_date LIKE concat('%', #{useDate}, '%') and
+        </if>
+        <if test="startTime != null">
+          start_time LIKE concat('%', #{startTime}, '%') and
+        </if>
+        <if test="endTime != null">
+          end_time LIKE concat('%', #{endTime}, '%') and
+        </if>
+        <if test="status != null">
+          status LIKE concat('%', #{status}, '%') and
+        </if>
+        <if test="purpose != null">
+          purpose LIKE concat('%', #{purpose}, '%') and
+        </if>
+      </trim>
+    </where>
+  </select>
+
+
+
+
+
+
+</mapper>

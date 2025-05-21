@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.TClassroomMapper">
+  <resultMap id="BaseResultMap" type="model.TClassroom">
+    <id column="classroom_id" jdbcType="INTEGER" property="classroomId" />
+    <result column="classroom_type" jdbcType="CHAR" property="classroomType" />
+    <result column="classroom_name" jdbcType="VARCHAR" property="classroomName" />
+    <result column="building_name" jdbcType="VARCHAR" property="buildingName" />
+    <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
+    <result column="capacity" jdbcType="INTEGER" property="capacity" />
+    <result column="administrator" jdbcType="VARCHAR" property="administrator" />
+    <result column="admin_phone" jdbcType="VARCHAR" property="adminPhone" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="model.TClassroom">
+    <result column="equipment_desc" jdbcType="LONGVARCHAR" property="equipmentDesc" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    classroom_id, classroom_type, classroom_name, building_name, image_url, capacity, 
+    administrator, admin_phone
+  </sql>
+  <sql id="Blob_Column_List">
+    equipment_desc
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_classroom
+    where classroom_id = #{classroomId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_classroom
+    where classroom_id = #{classroomId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="model.TClassroom">
+    insert into t_classroom (classroom_id, classroom_type, classroom_name, 
+      building_name, image_url, capacity, 
+      administrator, admin_phone, equipment_desc
+      )
+    values (#{classroomId,jdbcType=INTEGER}, #{classroomType,jdbcType=CHAR}, #{classroomName,jdbcType=VARCHAR}, 
+      #{buildingName,jdbcType=VARCHAR}, #{imageUrl,jdbcType=VARCHAR}, #{capacity,jdbcType=INTEGER}, 
+      #{administrator,jdbcType=VARCHAR}, #{adminPhone,jdbcType=VARCHAR}, #{equipmentDesc,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="model.TClassroom">
+    insert into t_classroom
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="classroomId != null">
+        classroom_id,
+      </if>
+      <if test="classroomType != null">
+        classroom_type,
+      </if>
+      <if test="classroomName != null">
+        classroom_name,
+      </if>
+      <if test="buildingName != null">
+        building_name,
+      </if>
+      <if test="imageUrl != null">
+        image_url,
+      </if>
+      <if test="capacity != null">
+        capacity,
+      </if>
+      <if test="administrator != null">
+        administrator,
+      </if>
+      <if test="adminPhone != null">
+        admin_phone,
+      </if>
+      <if test="equipmentDesc != null">
+        equipment_desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="classroomId != null">
+        #{classroomId,jdbcType=INTEGER},
+      </if>
+      <if test="classroomType != null">
+        #{classroomType,jdbcType=CHAR},
+      </if>
+      <if test="classroomName != null">
+        #{classroomName,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingName != null">
+        #{buildingName,jdbcType=VARCHAR},
+      </if>
+      <if test="imageUrl != null">
+        #{imageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="capacity != null">
+        #{capacity,jdbcType=INTEGER},
+      </if>
+      <if test="administrator != null">
+        #{administrator,jdbcType=VARCHAR},
+      </if>
+      <if test="adminPhone != null">
+        #{adminPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentDesc != null">
+        #{equipmentDesc,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="model.TClassroom">
+    update t_classroom
+    <set>
+      <if test="classroomType != null">
+        classroom_type = #{classroomType,jdbcType=CHAR},
+      </if>
+      <if test="classroomName != null">
+        classroom_name = #{classroomName,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingName != null">
+        building_name = #{buildingName,jdbcType=VARCHAR},
+      </if>
+      <if test="imageUrl != null">
+        image_url = #{imageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="capacity != null">
+        capacity = #{capacity,jdbcType=INTEGER},
+      </if>
+      <if test="administrator != null">
+        administrator = #{administrator,jdbcType=VARCHAR},
+      </if>
+      <if test="adminPhone != null">
+        admin_phone = #{adminPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentDesc != null">
+        equipment_desc = #{equipmentDesc,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where classroom_id = #{classroomId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="model.TClassroom">
+    update t_classroom
+    set classroom_type = #{classroomType,jdbcType=CHAR},
+      classroom_name = #{classroomName,jdbcType=VARCHAR},
+      building_name = #{buildingName,jdbcType=VARCHAR},
+      image_url = #{imageUrl,jdbcType=VARCHAR},
+      capacity = #{capacity,jdbcType=INTEGER},
+      administrator = #{administrator,jdbcType=VARCHAR},
+      admin_phone = #{adminPhone,jdbcType=VARCHAR},
+      equipment_desc = #{equipmentDesc,jdbcType=LONGVARCHAR}
+    where classroom_id = #{classroomId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="model.TClassroom">
+    update t_classroom
+    set classroom_type = #{classroomType,jdbcType=CHAR},
+      classroom_name = #{classroomName,jdbcType=VARCHAR},
+      building_name = #{buildingName,jdbcType=VARCHAR},
+      image_url = #{imageUrl,jdbcType=VARCHAR},
+      capacity = #{capacity,jdbcType=INTEGER},
+      administrator = #{administrator,jdbcType=VARCHAR},
+      admin_phone = #{adminPhone,jdbcType=VARCHAR}
+    where classroom_id = #{classroomId,jdbcType=INTEGER}
+  </update>
+
+
+  <select id="selectSelective" parameterType="model.TClassroom" resultType="model.TClassroom">
+    select  * from t_classroom
+    <where>
+      <trim suffixOverrides="and">
+        <if test="classroomType != null">
+          classroom_type LIKE concat('%', #{classroomType}, '%') and
+        </if>
+        <if test="classroomName != null">
+          classroom_name LIKE concat('%', #{classroomName}, '%') and
+        </if>
+        <if test="buildingName != null">
+          building_name LIKE concat('%', #{buildingName}, '%') and
+        </if>
+        <if test="imageUrl != null">
+          image_url LIKE concat('%', #{imageUrl}, '%') and
+        </if>
+        <if test="capacity != null">
+          capacity LIKE concat('%', #{capacity}, '%') and
+        </if>
+        <if test="administrator != null">
+          administrator LIKE concat('%', #{administrator}, '%') and
+        </if>
+        <if test="adminPhone != null">
+          admin_phone LIKE concat('%', #{adminPhone}, '%') and
+        </if>
+        <if test="equipmentDesc != null">
+          equipment_desc LIKE concat('%', #{equipmentDesc}, '%') and
+        </if>
+      </trim>
+    </where>
+  </select>
+
+
+</mapper>

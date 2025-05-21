@@ -1,0 +1,79 @@
+-- 教室信息表
+CREATE TABLE t_classroom (
+                             classroom_id INT PRIMARY KEY AUTO_INCREMENT COMMENT '教室ID',
+                             classroom_type ENUM('多媒体', '机房', '阶梯教室', '专业专用教室') NOT NULL COMMENT '教室类型',
+                             classroom_name VARCHAR(50) NOT NULL COMMENT '教室名称',
+                             building_name VARCHAR(50) NOT NULL COMMENT '教学楼名称',
+                             image_url VARCHAR(255) COMMENT '教室图片URL地址',
+                             equipment_desc TEXT COMMENT '教室设备描述',
+                             capacity INT NOT NULL COMMENT '可安排学生数量',
+                             administrator VARCHAR(50) NOT NULL COMMENT '教室管理员',
+                             admin_phone VARCHAR(20) NOT NULL COMMENT '教室管理员电话'
+);
+
+-- 用户信息表
+CREATE TABLE t_uusers (
+                        staff_id VARCHAR(20) PRIMARY KEY COMMENT '工号',
+                        password VARCHAR(100) NOT NULL COMMENT '密码',
+                        name VARCHAR(50) NOT NULL COMMENT '姓名',
+                        gender ENUM('男', '女', '其他') COMMENT '性别',
+                        phone VARCHAR(20) NOT NULL COMMENT '手机号码',
+                        user_type ENUM('管理员', '教师') NOT NULL COMMENT '用户类型',
+                        college VARCHAR(50) COMMENT '所在学院',
+                        job_type ENUM('专职', '兼职') COMMENT '专兼职类型'
+);
+
+-- 教室申请表
+CREATE TABLE t_application (
+                               application_id INT PRIMARY KEY AUTO_INCREMENT COMMENT '申请ID',
+                               classroom_id INT NOT NULL COMMENT '教室ID',
+                               user_id VARCHAR(20) NOT NULL COMMENT '用户ID',
+                               apply_date DATE NOT NULL COMMENT '申请日期',
+                               use_date DATE NOT NULL COMMENT '使用日期',
+                               start_time TIME NOT NULL COMMENT '使用开始时段',
+                               end_time TIME NOT NULL COMMENT '使用结束时段',
+                               purpose TEXT NOT NULL COMMENT '申请用途',
+                               status ENUM('待审核', '已通过', '已拒绝', '已取消') NOT NULL DEFAULT '待审核' COMMENT '审核状态',
+                               FOREIGN KEY (classroom_id) REFERENCES t_classroom(classroom_id),
+                               FOREIGN KEY (user_id) REFERENCES t_uusers(staff_id)
+);
+
+-- 教室申请视图
+CREATE VIEW v_application_info AS
+SELECT
+    a.application_id,
+    a.classroom_id,
+    c.classroom_name,
+    c.building_name,
+    c.classroom_type,
+    a.user_id,
+    u.name AS applicant_name,
+    u.college,
+    a.apply_date,
+    a.use_date,
+    a.start_time,
+    a.end_time,
+    a.purpose,
+    a.status
+FROM t_application a
+         JOIN t_classroom c ON a.classroom_id = c.classroom_id
+         JOIN t_uusers u ON a.user_id = u.staff_id;
+
+-- 插入测试数据
+INSERT INTO t_classroom (classroom_type, classroom_name, building_name, image_url, equipment_desc, capacity, administrator, admin_phone) VALUES
+                                                                                                                                             ('多媒体', '教101', '第一教学楼', 'https://picsum.photos/400/300?random=1', '投影仪、音响、电子白板', 120, '张老师', '13800138001'),
+                                                                                                                                             ('机房', '计201', '第二教学楼', 'https://picsum.photos/400/300?random=2', '50台联想电脑、服务器', 50, '王老师', '13900139002'),
+                                                                                                                                             ('阶梯教室', '阶301', '第三教学楼', 'https://picsum.photos/400/300?random=3', '中央空调、环绕音响', 200, '李老师', '13700137003'),
+                                                                                                                                             ('专业专用教室', '化401', '第四教学楼', 'https://picsum.photos/400/300?random=4', '化学实验台、通风设备', 30, '赵老师', '13600136004');
+
+INSERT INTO t_uusers (staff_id, password, name, gender, phone, user_type, college, job_type) VALUES
+                                                                                               ('admin001', 'admin123', '管理员A', '男', '13500135001', '管理员', '信息学院', NULL),
+                                                                                               ('teacher001', 'teacher123', '张教授', '男', '13800138005', '教师', '计算机学院', '专职'),
+                                                                                               ('teacher002', 'teacher456', '李老师', '女', '13900139006', '教师', '化学学院', '兼职'),
+                                                                                               ('teacher003', 'teacher789', '王老师', '男', '13700137007', '教师', '物理学院', '专职');
+
+INSERT INTO t_application (classroom_id, user_id, apply_date, use_date, start_time, end_time, purpose, status) VALUES
+                                                                                                                   (1, 'teacher001', '2023-10-10', '2023-10-15', '08:30:00', '10:15:00', '计算机基础课程授课', '已通过'),
+                                                                                                                   (2, 'teacher002', '2023-10-11', '2023-10-16', '13:30:00', '15:45:00', '化学实验课程', '已通过'),
+                                                                                                                   (3, 'teacher003', '2023-10-12', '2023-10-17', '09:00:00', '11:30:00', '学术讲座', '待审核'),
+                                                                                                                   (1, 'teacher002', '2023-10-13', '2023-10-18', '14:00:00', '16:30:00', '公开课', '已拒绝');

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <context:component-scan base-package="service"/>
+    <context:component-scan base-package="mapper"/>
+ 
+
+    <!--导入外部数据源-->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+
+    <!--配置数据源 BasicDataSource-->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${p6spy.drivername}" />
+        <property name="url" value="${p6spy.url}"/>
+        <property name="username" value="${p6spy.username}"/>
+        <property name="password" value="${p6spy.password}"/>
+    </bean>
+
+    <!--指定局部mybatis配置文件的位置：SqlSessionFactoryBean-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"></property>
+        <property name="mapperLocations" value="classpath*:mapper/*.xml"></property>
+        <property name="configLocation" value="classpath:mybatis.xml"></property>
+   </bean>
+
+   <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+         <constructor-arg index="0" ref="sqlSessionFactory"/>
+   </bean>
+
+   <!--扫描和加载Mybatis的Mapper接口,并生成MapperFactoryBean，-->
+   <!--帮助Mybatis的Mapper接口与spring进行整合，该配置使用在mybatis的注解技术定义的Mapper接口-->
+    <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="mapper"></property>
+    </bean>
+
+
+    <!-- 启用注解驱动的事务管理 -->
+    <tx:annotation-driven transaction-manager="transactionManager" />
+
+    <!-- 配置事务管理器 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+</beans>
