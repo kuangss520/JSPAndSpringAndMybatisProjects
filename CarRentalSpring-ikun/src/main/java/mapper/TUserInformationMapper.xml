@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.TUserInformationMapper">
+  <resultMap id="BaseResultMap" type="model.TUserInformation">
+    <id column="UserId" jdbcType="VARCHAR" property="userid" />
+    <result column="UserName" jdbcType="VARCHAR" property="username" />
+    <result column="pwd" jdbcType="VARCHAR" property="pwd" />
+    <result column="Mail" jdbcType="VARCHAR" property="mail" />
+    <result column="Mobile" jdbcType="VARCHAR" property="mobile" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    UserId, UserName, pwd, Mail, Mobile
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from userinformation
+    where UserId = #{userid,jdbcType=VARCHAR}
+  </select>
+  <!--动态查询-->
+    <select id="selectAllUserSelective" parameterType="model.TUserInformation" resultType="model.TUserInformation">
+      select * from userinformation
+      <where>
+        <trim suffixOverrides="and">
+          <if test="userid != null">
+            UserId = #{userid,jdbcType=VARCHAR} and
+          </if>
+          <if test="username != null">
+            UserName = #{username,jdbcType=VARCHAR} and
+          </if>
+          <if test="mail != null">
+            Mail = #{mail,jdbcType=VARCHAR} and
+          </if>
+          <if test="mobile != null">
+            Mobile = #{mobile,jdbcType=VARCHAR} and
+          </if>
+
+        </trim>
+      </where>
+    </select>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from userinformation
+    where UserId = #{userid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="model.TUserInformation">
+    insert into userinformation (UserId, UserName, pwd, 
+      Mail, Mobile)
+    values (#{userid,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR}, 
+      #{mail,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="model.TUserInformation">
+    insert into userinformation
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userid != null">
+        UserId,
+      </if>
+      <if test="username != null">
+        UserName,
+      </if>
+      <if test="pwd != null">
+        pwd,
+      </if>
+      <if test="mail != null">
+        Mail,
+      </if>
+      <if test="mobile != null">
+        Mobile,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userid != null">
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="pwd != null">
+        #{pwd,jdbcType=VARCHAR},
+      </if>
+      <if test="mail != null">
+        #{mail,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="model.TUserInformation">
+    update userinformation
+    <set>
+      <if test="username != null">
+        UserName = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="pwd != null">
+        pwd = #{pwd,jdbcType=VARCHAR},
+      </if>
+      <if test="mail != null">
+        Mail = #{mail,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        Mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where UserId = #{userid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="model.TUserInformation">
+    update userinformation
+    set UserName = #{username,jdbcType=VARCHAR},
+      pwd = #{pwd,jdbcType=VARCHAR},
+      Mail = #{mail,jdbcType=VARCHAR},
+      Mobile = #{mobile,jdbcType=VARCHAR}
+    where UserId = #{userid,jdbcType=VARCHAR}
+  </update>
+</mapper>

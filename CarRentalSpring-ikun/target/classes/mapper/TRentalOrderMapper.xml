@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.TRentalOrderMapper">
+    <resultMap id="BaseResultMap" type="model.TRentalOrder">
+        <id column="OrderId" jdbcType="VARCHAR" property="orderid"/>
+        <result column="VehicleID" jdbcType="VARCHAR" property="vehicleid"/>
+        <result column="UserId" jdbcType="VARCHAR" property="userid"/>
+        <result column="StartTime" jdbcType="TIMESTAMP" property="starttime"/>
+        <result column="EndTime" jdbcType="TIMESTAMP" property="endtime"/>
+        <result column="VehicleStatus" jdbcType="VARCHAR" property="vehiclestatus"/>
+        <result column="Remarks" jdbcType="VARCHAR" property="remarks"/>
+        <result column="OrderStatus" jdbcType="VARCHAR" property="orderstatus"/>
+        <result column="orderprice" jdbcType="DECIMAL" property="orderprice"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        OrderId
+        , VehicleID, UserId, StartTime, EndTime, VehicleStatus, Remarks, OrderStatus,
+        orderprice
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from rentalorder
+        where OrderId = #{orderid,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete
+        from rentalorder
+        where OrderId = #{orderid,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="model.TRentalOrder">
+        insert into rentalorder (OrderId, VehicleID, UserId,
+        StartTime, EndTime, VehicleStatus,
+        Remarks, OrderStatus, orderprice)
+        values (#{orderid,jdbcType=VARCHAR}, #{vehicleid,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR},
+        #{starttime,jdbcType=TIMESTAMP}, #{endtime,jdbcType=TIMESTAMP}, #{vehiclestatus,jdbcType=VARCHAR},
+        #{remarks,jdbcType=VARCHAR}, #{orderstatus,jdbcType=VARCHAR}, #{orderprice,jdbcType=DECIMAL})
+    </insert>
+    <insert id="insertSelective" parameterType="model.TRentalOrder">
+        insert into rentalorder
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderid != null">
+                OrderId,
+            </if>
+            <if test="vehicleid != null">
+                VehicleID,
+            </if>
+            <if test="userid != null">
+                UserId,
+            </if>
+            <if test="starttime != null">
+                StartTime,
+            </if>
+            <if test="endtime != null">
+                EndTime,
+            </if>
+            <if test="vehiclestatus != null">
+                VehicleStatus,
+            </if>
+            <if test="remarks != null">
+                Remarks,
+            </if>
+            <if test="orderstatus != null">
+                OrderStatus,
+            </if>
+            <if test="orderprice != null">
+                orderprice,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderid != null">
+                #{orderid,jdbcType=VARCHAR},
+            </if>
+            <if test="vehicleid != null">
+                #{vehicleid,jdbcType=VARCHAR},
+            </if>
+            <if test="userid != null">
+                #{userid,jdbcType=VARCHAR},
+            </if>
+            <if test="starttime != null">
+                #{starttime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endtime != null">
+                #{endtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="vehiclestatus != null">
+                #{vehiclestatus,jdbcType=VARCHAR},
+            </if>
+            <if test="remarks != null">
+                #{remarks,jdbcType=VARCHAR},
+            </if>
+            <if test="orderstatus != null">
+                #{orderstatus,jdbcType=VARCHAR},
+            </if>
+            <if test="orderprice != null">
+                #{orderprice,jdbcType=DECIMAL},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="model.TRentalOrder">
+        update rentalorder
+        <set>
+            <if test="vehicleid != null">
+                VehicleID = #{vehicleid,jdbcType=VARCHAR},
+            </if>
+            <if test="userid != null">
+                UserId = #{userid,jdbcType=VARCHAR},
+            </if>
+            <if test="starttime != null">
+                StartTime = #{starttime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endtime != null">
+                EndTime = #{endtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="vehiclestatus != null">
+                VehicleStatus = #{vehiclestatus,jdbcType=VARCHAR},
+            </if>
+            <if test="remarks != null">
+                Remarks = #{remarks,jdbcType=VARCHAR},
+            </if>
+            <if test="orderstatus != null">
+                OrderStatus = #{orderstatus,jdbcType=VARCHAR},
+            </if>
+            <if test="orderprice != null">
+                orderprice = #{orderprice,jdbcType=DECIMAL},
+            </if>
+        </set>
+        where OrderId = #{orderid,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="model.TRentalOrder">
+        update rentalorder
+        set VehicleID     = #{vehicleid,jdbcType=VARCHAR},
+            UserId        = #{userid,jdbcType=VARCHAR},
+            StartTime     = #{starttime,jdbcType=TIMESTAMP},
+            EndTime       = #{endtime,jdbcType=TIMESTAMP},
+            VehicleStatus = #{vehiclestatus,jdbcType=VARCHAR},
+            Remarks       = #{remarks,jdbcType=VARCHAR},
+            OrderStatus   = #{orderstatus,jdbcType=VARCHAR},
+            orderprice    = #{orderprice,jdbcType=DECIMAL}
+        where OrderId = #{orderid,jdbcType=VARCHAR}
+    </update>
+
+    <select id="selectByOrderLikeSelective" parameterType="model.TRentalOrder" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from rentalorder
+        <where>
+            <trim suffixOverrides="and">
+                <if test="userid != null and userid != ''">
+                    UserId = #{userid,jdbcType=VARCHAR} and
+                </if>
+                <if test="starttime != null">
+                    StartTime &gt;= #{starttime,jdbcType=TIMESTAMP} and
+                </if>
+                <if test="endtime != null">
+                    EndTime &lt;= #{endtime,jdbcType=TIMESTAMP} and
+                </if>
+                </trim>
+        </where>
+    </select>
+
+    <select id="selectAllOrders" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from rentalorder
+    </select>
+</mapper>

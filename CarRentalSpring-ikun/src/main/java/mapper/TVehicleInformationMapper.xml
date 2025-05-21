@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.TVehicleInformationMapper">
+  <resultMap id="BaseResultMap" type="model.TVehicleInformation">
+    <id column="VehicleID" jdbcType="VARCHAR" property="vehicleid" />
+    <result column="VehicleType" jdbcType="VARCHAR" property="vehicletype" />
+    <result column="VehicleGrade" jdbcType="VARCHAR" property="vehiclegrade" />
+    <result column="RideNum" jdbcType="INTEGER" property="ridenum" />
+    <result column="VehicleBrand" jdbcType="VARCHAR" property="vehiclebrand" />
+    <result column="VehicleName" jdbcType="VARCHAR" property="vehiclename" />
+    <result column="VehiclePic" jdbcType="VARCHAR" property="vehiclepic" />
+    <result column="VehicleDis" jdbcType="VARCHAR" property="vehicledis" />
+    <result column="DailyRental" jdbcType="DECIMAL" property="dailyrental" />
+    <result column="State" jdbcType="VARCHAR" property="state" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    VehicleID, VehicleType, VehicleGrade, RideNum, VehicleBrand, VehicleName, VehiclePic,
+    VehicleDis, DailyRental, State
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from Vehicleinformation
+    where VehicleID = #{vehicleid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from Vehicleinformation
+    where VehicleID = #{vehicleid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="model.TVehicleInformation">
+    insert into Vehicleinformation (VehicleID, VehicleType, VehicleGrade,
+      RideNum, VehicleBrand, VehicleName,
+      VehiclePic, VehicleDis, DailyRental,
+      State)
+    values (#{vehicleid,jdbcType=VARCHAR}, #{vehicletype,jdbcType=VARCHAR}, #{vehiclegrade,jdbcType=VARCHAR},
+      #{ridenum,jdbcType=INTEGER}, #{vehiclebrand,jdbcType=VARCHAR}, #{vehiclename,jdbcType=VARCHAR},
+      #{vehiclepic,jdbcType=VARCHAR}, #{vehicledis,jdbcType=VARCHAR}, #{dailyrental,jdbcType=DECIMAL},
+      #{state,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="model.TVehicleInformation">
+    insert into Vehicleinformation
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="vehicleid != null">
+        VehicleID,
+      </if>
+      <if test="vehicletype != null">
+        VehicleType,
+      </if>
+      <if test="vehiclegrade != null">
+        VehicleGrade,
+      </if>
+      <if test="ridenum != null">
+        RideNum,
+      </if>
+      <if test="vehiclebrand != null">
+        VehicleBrand,
+      </if>
+      <if test="vehiclename != null">
+        VehicleName,
+      </if>
+      <if test="vehiclepic != null">
+        VehiclePic,
+      </if>
+      <if test="vehicledis != null">
+        VehicleDis,
+      </if>
+      <if test="dailyrental != null">
+        DailyRental,
+      </if>
+      <if test="state != null">
+        State,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="vehicleid != null">
+        #{vehicleid,jdbcType=VARCHAR},
+      </if>
+      <if test="vehicletype != null">
+        #{vehicletype,jdbcType=VARCHAR},
+      </if>
+      <if test="vehiclegrade != null">
+        #{vehiclegrade,jdbcType=VARCHAR},
+      </if>
+      <if test="ridenum != null">
+        #{ridenum,jdbcType=INTEGER},
+      </if>
+      <if test="vehiclebrand != null">
+        #{vehiclebrand,jdbcType=VARCHAR},
+      </if>
+      <if test="vehiclename != null">
+        #{vehiclename,jdbcType=VARCHAR},
+      </if>
+      <if test="vehiclepic != null">
+        #{vehiclepic,jdbcType=VARCHAR},
+      </if>
+      <if test="vehicledis != null">
+        #{vehicledis,jdbcType=VARCHAR},
+      </if>
+      <if test="dailyrental != null">
+        #{dailyrental,jdbcType=DECIMAL},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="model.TVehicleInformation">
+    update Vehicleinformation
+    <set>
+      <if test="vehicletype != null">
+        VehicleType = #{vehicletype,jdbcType=VARCHAR},
+      </if>
+      <if test="vehiclegrade != null">
+        VehicleGrade = #{vehiclegrade,jdbcType=VARCHAR},
+      </if>
+      <if test="ridenum != null">
+        RideNum = #{ridenum,jdbcType=INTEGER},
+      </if>
+      <if test="vehiclebrand != null">
+        VehicleBrand = #{vehiclebrand,jdbcType=VARCHAR},
+      </if>
+      <if test="vehiclename != null">
+        VehicleName = #{vehiclename,jdbcType=VARCHAR},
+      </if>
+      <if test="vehiclepic != null">
+        VehiclePic = #{vehiclepic,jdbcType=VARCHAR},
+      </if>
+      <if test="vehicledis != null">
+        VehicleDis = #{vehicledis,jdbcType=VARCHAR},
+      </if>
+      <if test="dailyrental != null">
+        DailyRental = #{dailyrental,jdbcType=DECIMAL},
+      </if>
+      <if test="state != null">
+        State = #{state,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where VehicleID = #{vehicleid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="model.TVehicleInformation">
+    update Vehicleinformation
+    set VehicleType = #{vehicletype,jdbcType=VARCHAR},
+      VehicleGrade = #{vehiclegrade,jdbcType=VARCHAR},
+      RideNum = #{ridenum,jdbcType=INTEGER},
+      VehicleBrand = #{vehiclebrand,jdbcType=VARCHAR},
+      VehicleName = #{vehiclename,jdbcType=VARCHAR},
+      VehiclePic = #{vehiclepic,jdbcType=VARCHAR},
+      VehicleDis = #{vehicledis,jdbcType=VARCHAR},
+      DailyRental = #{dailyrental,jdbcType=DECIMAL},
+      State = #{state,jdbcType=VARCHAR}
+    where VehicleID = #{vehicleid,jdbcType=VARCHAR}
+  </update>
+
+  <select id="selectByVehicleLikeSelective" parameterType="model.TVehicleInformation" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from Vehicleinformation
+    <where>
+      <trim suffixOverrides="and">
+        <if test="vehicleid != null and vehicleid != ''">
+          VehicleID like CONCAT('%', #{vehicleid,jdbcType=VARCHAR}, '%') and
+        </if>
+        <if test="vehicletype != null and vehicletype != ''">
+          VehicleType = #{vehicletype,jdbcType=VARCHAR} and
+        </if>
+        </trim>
+    </where>
+  </select>
+
+  <select id="selectAllVehicles" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from Vehicleinformation
+  </select>
+</mapper>
